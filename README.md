@@ -100,6 +100,7 @@ The following cmake arguments are available when compiling:
 - `RETRO_USE_HW_RENDER`: Enables the Hardware Renderer used by the main menu and touch controls UI. Takes a boolean, defaults to `on`.
 - `RETRO_ORIGINAL_CODE`: Removes any custom code. *A playable game will not be built with this enabled.* Takes a boolean, defaults to `off`.
 - `RETRO_SDL_VERSION`: *Only change this if you know what you're doing.* Switches between using SDL1 or SDL2. Takes an integer of either `1` or `2`, defaults to `2`.
+- `RETRO_WEB_SAVES`
 
 ## Unofficial Branches
 Follow the installation instructions in the readme of each branch.

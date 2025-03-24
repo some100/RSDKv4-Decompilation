@@ -44,9 +44,6 @@ bool useSGame = false;
 
 bool ReadSaveRAMData()
 {
-#ifdef RETRO_WEB_SAVES
-    strcpy(savePath, "/saves/");
-#endif
     useSGame = false;
     char buffer[0x180];
 #if RETRO_USE_MOD_LOADER
@@ -119,9 +116,6 @@ bool ReadSaveRAMData()
 
 bool WriteSaveRAMData()
 {
-#ifdef RETRO_WEB_SAVES
-    strcpy(savePath, "/saves/");
-#endif
     char buffer[0x180];
 
     if (!useSGame) {
@@ -224,6 +218,8 @@ void InitUserdata()
         env->DeleteLocalRef(activity);
         env->DeleteLocalRef(cls);
     }
+#elif RETRO_USE_WEB_SAVES
+    sprintf(gamePath, "/saves/"); // /saves/ is more or less guaranteed to exist
 #endif
 
     char buffer[0x100];

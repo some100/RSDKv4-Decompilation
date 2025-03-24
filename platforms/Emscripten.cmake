@@ -1,11 +1,20 @@
 add_executable(RetroEngine ${RETRO_FILES})
 target_link_options(RetroEngine PRIVATE 
                     -sINITIAL_MEMORY=128mb 
-                    -O2 
-                    --preload-file ../Data.rsdk@/ 
-                    -sLEGACY_GL_EMULATION 
-                    --use-port=ogg 
+                    -Oz
+                    -sLEGACY_GL_EMULATION
+                    -sLZ4
+                    -sWASM_BIGINT 
+                    --use-port=ogg
                     --use-port=vorbis
+                    --use-preload-cache
+                    --preload-file ../Data.rsdk@/ 
+                    --embed-file ../settings.ini@/
+)
+target_compile_options(RetroEngine PRIVATE 
+                    --use-port=ogg
+                    --use-port=vorbis
+                    -Oz
 )
 
 set(RETRO_NETWORKING off)
@@ -18,8 +27,8 @@ elseif(RETRO_SDL_VERSION STREQUAL "1")
 endif()
 
 if(RETRO_WEB_SAVES)
-    target_link_options(RetroEngine PRIVATE -lidbfs.js -sASYNCIFY)
-    target_compile_definitions(RetroEngine PRIVATE RETRO_WEB_SAVES=1)
+    target_link_options(RetroEngine PRIVATE -lidbfs.js -sEXPORTED_FUNCTIONS=_main,_callbackIDBFS)
+    target_compile_definitions(RetroEngine PRIVATE RETRO_USE_WEB_SAVES=1)
 endif()
 
 if(RETRO_MOD_LOADER)
