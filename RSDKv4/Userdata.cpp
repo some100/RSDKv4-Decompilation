@@ -44,6 +44,9 @@ bool useSGame = false;
 
 bool ReadSaveRAMData()
 {
+#ifdef RETRO_WEB_SAVES
+    strcpy(savePath, "/saves/");
+#endif
     useSGame = false;
     char buffer[0x180];
 #if RETRO_USE_MOD_LOADER
@@ -116,6 +119,9 @@ bool ReadSaveRAMData()
 
 bool WriteSaveRAMData()
 {
+#ifdef RETRO_WEB_SAVES
+    strcpy(savePath, "/saves/");
+#endif
     char buffer[0x180];
 
     if (!useSGame) {

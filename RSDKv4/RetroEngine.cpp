@@ -524,6 +524,9 @@ void RetroEngine::Init()
 
 void RetroEngine::Run()
 {
+#if RETRO_PLATFORM == RETRO_WEB
+    Engine.deltaTime = 1.0 / 60;
+#else
     Engine.deltaTime = 0.0f;
 
     unsigned long long targetFreq = SDL_GetPerformanceFrequency() / Engine.refreshRate;
@@ -540,6 +543,7 @@ void RetroEngine::Run()
         }
 
         Engine.deltaTime = 1.0 / 60;
+#endif
 #endif
         running = ProcessEvents();
 
@@ -598,6 +602,7 @@ void RetroEngine::Run()
             }
 #endif
         }
+#if RETRO_PLATFORM != RETRO_WEB
     }
 
     ReleaseAudioDevice();
@@ -615,6 +620,7 @@ void RetroEngine::Run()
 
 #if RETRO_USING_SDL1 || RETRO_USING_SDL2
     SDL_Quit();
+#endif
 #endif
 }
 

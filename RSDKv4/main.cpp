@@ -6,6 +6,22 @@
 #include "Windows.h"
 #endif
 
+#if RETRO_PLATFORM == RETRO_WEB
+#ifdef RETRO_WEB_SAVES
+EM_ASYNC_JS(void, loadFromIDBFS, (), {
+    FS.mkdir('/saves');
+    FS.mount(IDBFS, { autoPersist: true }, '/saves');
+    FS.syncfs(true, function (err) {
+        console.error("Failed to load from IDBFS");
+    });
+});
+#endif
+void Run()
+{
+    Engine.Run();
+}
+#endif
+
 void parseArguments(int argc, char *argv[])
 {
     for (int a = 0; a < argc; ++a) {
@@ -55,8 +71,17 @@ int main(int argc, char *argv[])
 #endif
 
     SDL_SetHint(SDL_HINT_WINRT_HANDLE_BACK_BUTTON, "1");
+
+#ifdef RETRO_WEB_SAVES
+    loadFromIDBFS();
+#endif
     Engine.Init();
+
+#if RETRO_PLATFORM != RETRO_WEB
     Engine.Run();
+#else
+    emscripten_set_main_loop(Run, 0, true);
+#endif
 
 #if !RETRO_USE_ORIGINAL_CODE
     if (Engine.consoleEnabled) {
