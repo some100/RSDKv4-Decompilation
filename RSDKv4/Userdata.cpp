@@ -187,6 +187,19 @@ bool WriteSaveRAMData()
 
 void InitUserdata()
 {
+#if RETRO_PLATFORM == RETRO_WEB
+    EM_ASM_INT({
+        FS.mkdir('/savesRSDKv4');
+        FS.mount(IDBFS, { autoPersist: true }, '/savesRSDKv4');
+        FS.syncfs(true, function (err) {
+            if (err)
+                console.error("Failed to load from IDBFS: " + err);
+            else
+                console.log("Successfully loaded from IDBFS");
+            return true;
+        });
+    });
+#endif
     // userdata files are loaded from this directory
     sprintf(gamePath, "%s", BASE_PATH);
 #if RETRO_USE_MOD_LOADER
@@ -218,8 +231,8 @@ void InitUserdata()
         env->DeleteLocalRef(activity);
         env->DeleteLocalRef(cls);
     }
-#elif RETRO_USE_WEB_SAVES
-    sprintf(gamePath, "/saves/"); // /saves/ is more or less guaranteed to exist
+#elif RETRO_PLATFORM == RETRO_WEB
+    sprintf(gamePath, "/savesRSDKv4/"); // /savesRSDKv4/ is more or less guaranteed to exist
 #endif
 
     char buffer[0x100];

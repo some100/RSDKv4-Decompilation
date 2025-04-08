@@ -78,6 +78,9 @@ Install the following dependencies: then follow the [compilation steps below](#c
 ### Android
 Follow the android build instructions [here.](./dependencies/android/README.md)
 
+### Web
+Create a directory named "files" in the root of the repository. Place the Data.rsdk and optionally any files that you would want included in (like settings.ini) inside of the directory.
+
 ## Compiling
 
 Compiling is as simple as typing the following in the root repository directory:
